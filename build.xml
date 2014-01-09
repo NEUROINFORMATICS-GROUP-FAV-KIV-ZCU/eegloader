@@ -1,0 +1,54 @@
+<!-- 
+* File:         build.xml
+* Description:  Build file 
+* 
+* Author:       Jan Stebetak A06343
+*
+-->
+
+<project name="example" default="jar" basedir=".">
+   <description>
+      TI build file
+    </description>
+
+   <!-- Source code localization globals -->
+   <property name="package" value="cz/zcu/kiv"/>
+   <property name="build" value="../jar/build"/>
+   <property name="dist" value="../dist"/>
+   <property name="doc" value="../dist/doc"/>
+   <property name="jar" value="EEGLoader_2.0.jar"/>
+   <property name="main-class" value="test/Main"/>
+
+   <!-- Third party libraries-->
+   <property name="third.party.path" location="../lib/packages"/>
+   <property name="third.party.log4j" value="${third.party.path}/log4j-1.2.8.jar"/>
+
+   <path id="project.class.path">
+      <!-- unused <pathelement path="${third.party.log4j}"/> -->
+      <pathelement path="lib"/>
+   </path>
+
+   <property name="outputdir" value="."/>
+   
+   
+
+   <target name="build"
+      description="build example">
+      <echo message="Build"/>
+      <javac srcdir="./src/${package}" destdir="${outputdir}">
+	 <classpath refid="project.class.path"/>
+      </javac>
+   </target>
+
+   <target name="jar" depends="build"
+      description="create jar">
+      
+      <jar destfile="${jar}" update="true" basedir=".">
+	 <manifest>
+	    <attribute name="Main-Class" value="${package}.${main-class}"/>
+	 </manifest>
+      </jar>
+   </target>
+   
+
+</project>
