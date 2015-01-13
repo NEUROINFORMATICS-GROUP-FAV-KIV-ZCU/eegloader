@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EEGDataTransformer implements DataTransformer {
 
-    private VhdrReader reader= new VhdrReader();
+    private VhdrReader reader = new VhdrReader();
     /**
      * This method reads binary data and decodes double values.
      * This method expects data file and header file in binary form. It is not depend on data source.
@@ -105,4 +105,9 @@ public class EEGDataTransformer implements DataTransformer {
         return dir + property.get("DataFile");
     }
 
+    @Override
+    public List<ChannelInfo> getChannelInfo(String headerFile) throws IOException {
+        reader.readVhdr(fileToByteArray(headerFile));
+        return getChannelInfo();
+    }
 }

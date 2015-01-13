@@ -74,4 +74,12 @@ public interface DataTransformer {
      * @return The list of channels
      */
     public List<ChannelInfo> getChannelInfo();
+
+    /**
+     * This method provides the list of channel obtained from header file.
+     *
+     *
+     * @return The list of channels
+     */
+    public List<ChannelInfo> getChannelInfo(String headerFile) throws IOException;
 }
