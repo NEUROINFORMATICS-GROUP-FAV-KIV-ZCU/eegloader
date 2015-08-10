@@ -28,11 +28,18 @@ public class Main {
 //                dataInValues = transformer.readBinaryData(args[0], args[1], channel);
 //            }
 //            else {
-                dataInValues = transformer.readBinaryData("c:\\java\\guess_the_number\\data\\train\\set2.vhdr", 1, ByteOrder.LITTLE_ENDIAN);
+                dataInValues = transformer.readBinaryData("c:\\java\\guess_the_number\\data\\numbers\\17ZS\\PD_14_3_2015_01.vhdr", 1, ByteOrder.LITTLE_ENDIAN);
 //            }
-//
-            for (double value: dataInValues)
+//68.4, 69.3, 73
+            int i = 0;
+            for (double value: dataInValues) {
                 System.out.println(value);
+                if (i > 100) break;
+                i++;
+            }
+            System.out.println(dataInValues.length);
+
+
 //            for (EEGMarker marker: list) {
 //                System.out.println(marker.getName() + " " + marker.getPosition());
 //            }

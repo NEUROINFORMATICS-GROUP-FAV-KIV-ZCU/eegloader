@@ -48,7 +48,7 @@ public class EegReader {
             }
         }
         if (dataOrientation == DataOrientation.VECTORIZED) {
-                ret = readVectorizedChannel(channel, ret, order);
+                ret = readVectorizedChannel(channel - 1, ret, order);
         }
 
         return ret;
