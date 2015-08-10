@@ -2,6 +2,7 @@ package cz.zcu.kiv.signal;
 
 
 import java.io.*;
+import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class EEGDataTransformer implements DataTransformer {
      * @param channel - number of channel, used electrode
      * @return double values of EEG signal.
      */
-    public double[] readBinaryData(byte[] headerFile, byte[] dataFile, int channel) {
+    public double[] readBinaryData(byte[] headerFile, byte[] dataFile, int channel, ByteOrder order) {
         reader.readVhdr(headerFile);
         EegReader eeg = new EegReader(reader);
-        return eeg.readFile(dataFile, channel);
+        return eeg.readFile(dataFile, channel, order);
     }
 
     /**
@@ -35,8 +36,8 @@ public class EEGDataTransformer implements DataTransformer {
          * @return double values of EEG signal
          * @throws IOException
          */
-    public double[] readBinaryData(String headerFile, String dataFile, int channel) throws IOException {
-        return readBinaryData(fileToByteArray(headerFile), fileToByteArray(dataFile), channel);
+    public double[] readBinaryData(String headerFile, String dataFile, int channel, ByteOrder order) throws IOException {
+        return readBinaryData(fileToByteArray(headerFile), fileToByteArray(dataFile), channel, order);
     }
 
     /**
@@ -50,9 +51,9 @@ public class EEGDataTransformer implements DataTransformer {
          * @return  double values of EEG signal
          * @throws IOException
          */
-    public double[] readBinaryData(String headerFile, int channel) throws IOException {
+    public double[] readBinaryData(String headerFile, int channel, ByteOrder order) throws IOException {
         String dataFile = getEEGFileName(headerFile);
-        return readBinaryData(headerFile, dataFile, channel);
+        return readBinaryData(headerFile, dataFile, channel, order);
     }
 
     /**

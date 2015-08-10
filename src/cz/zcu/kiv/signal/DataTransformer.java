@@ -1,7 +1,7 @@
 package cz.zcu.kiv.signal;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface DataTransformer {
      * @param channel - number of channel, used electrode
      * @return double values of EEG signal.
      */
-    public double[] readBinaryData(byte[] headerFile, byte[] dataFile,  int channel);
+    public double[] readBinaryData(byte[] headerFile, byte[] dataFile,  int channel, ByteOrder order);
 
     /**
      * This method reads binary data and decodes double values.
@@ -36,7 +36,7 @@ public interface DataTransformer {
      * @return double values of EEG signal
      * @throws IOException
      */
-    public double[] readBinaryData(String headerFile, String dataFile, int channel) throws IOException;
+    public double[] readBinaryData(String headerFile, String dataFile, int channel, ByteOrder order) throws IOException;
 
     /**
      * This method reads binary data and decodes double values.
@@ -49,7 +49,7 @@ public interface DataTransformer {
      * @return  double values of EEG signal
      * @throws IOException
      */
-    public double[] readBinaryData(String headerFile, int channel) throws IOException;
+    public double[] readBinaryData(String headerFile, int channel, ByteOrder order) throws IOException;
 
 
     /**
@@ -59,13 +59,15 @@ public interface DataTransformer {
      * @return map of stimuli. Each EEGMarker includes information about stimuli, its name and position.
      */
     public HashMap<String, EEGMarker> readMarkers(String markerFile) throws IOException;
+
+    public List<EEGMarker> readMarkerList(String markerFile) throws IOException;
+
     /**
      * This method provides loaded properties of data file from header file.
      *
      *
      * @return properties in HashMap
      */
-    public List<EEGMarker> readMarkerList(String markerFile) throws IOException;
     public HashMap<String, HashMap<String, String>> getProperties();
 
     /**
