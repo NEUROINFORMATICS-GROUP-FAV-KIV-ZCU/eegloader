@@ -1,6 +1,5 @@
 package cz.zcu.kiv.signal;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +16,7 @@ public class VhdrReader {
         properties = new HashMap<String, HashMap<String, String>>();
         channels = new ArrayList<ChannelInfo>();
         markers = new HashMap<String, EEGMarker>();
+        markerList = new ArrayList<EEGMarker>();
     }
 
 
