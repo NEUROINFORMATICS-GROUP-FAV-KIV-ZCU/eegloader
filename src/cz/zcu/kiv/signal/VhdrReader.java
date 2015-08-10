@@ -11,6 +11,7 @@ public class VhdrReader {
     protected HashMap<String, HashMap<String, String>> properties;
     protected List<ChannelInfo> channels;
     protected HashMap<String, EEGMarker> markers;
+    protected List<EEGMarker> markerList;
 
     public VhdrReader() {
         properties = new HashMap<String, HashMap<String, String>>();
@@ -63,6 +64,7 @@ public class VhdrReader {
                     marker.setPosition(Integer.parseInt(par[2]));
 
                     markers.put(arr[0], marker.clone());
+                    markerList.add(marker.clone());
                 }
             }
         }
@@ -114,5 +116,9 @@ public class VhdrReader {
 
     public HashMap<String, EEGMarker> getMarkers() {
         return markers;
+    }
+
+    public List<EEGMarker> getMarkerList() {
+        return markerList;
     }
 }

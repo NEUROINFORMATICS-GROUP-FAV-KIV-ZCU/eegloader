@@ -66,6 +66,12 @@ public class EEGDataTransformer implements DataTransformer {
         return reader.getMarkers();
     }
 
+    @Override
+    public List<EEGMarker> readMarkerList(String markerFile) throws IOException {
+        reader.readVmrk(fileToByteArray(markerFile));
+        return reader.getMarkerList();
+    }
+
     /**
          * This method provides loaded properties of data file from header file.
          *

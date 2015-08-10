@@ -65,6 +65,7 @@ public interface DataTransformer {
      *
      * @return properties in HashMap
      */
+    public List<EEGMarker> readMarkerList(String markerFile) throws IOException;
     public HashMap<String, HashMap<String, String>> getProperties();
 
     /**
