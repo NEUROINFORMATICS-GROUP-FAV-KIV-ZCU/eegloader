@@ -4,14 +4,14 @@ instance of EEGDataTransformer that implements this interface
 
 DataTrasformer dt = new EEGDataTransformer();
 
-This library also includes the Main class. Therefore, this library can be used as a console application. It expects arguments in
+This library also includes the Main class for testing purposes. Reader can use this class as example of usage of the interface. This library is runnable in console. It shows the loaded aplitude values in the console. It expects arguments in
 following formats:
 
-java -jar EEGLoader_2.0.jar <name of header file (.vhdr)> <name of data file (.eeg or .avg)> <number of channel or electrode>
+java -jar EEGLoader_2.2.jar <name of header file (.vhdr)> <name of data file (.eeg or .avg)> <number of channel or electrode>
 
 or
 
-java -jar EEGLoader_2.0.jar <name of header file (.vhdr)> <number of channel or electrode>
+java -jar EEGLoader_2.2.jar <name of header file (.vhdr)> <number of channel or electrode>
 In this case it is necessary that data file (.eeg or .avg) is in the same directory as the header file.
 
 Note that numbers of channel starts at number 1.
