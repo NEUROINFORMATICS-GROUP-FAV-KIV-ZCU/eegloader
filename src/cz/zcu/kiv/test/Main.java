@@ -2,10 +2,8 @@ package cz.zcu.kiv.test;
 
 import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
-import cz.zcu.kiv.signal.EEGMarker;
 
 import java.nio.ByteOrder;
-import java.util.List;
 
 /**
  * This class shows an example how to use the EEGLoader.
@@ -20,24 +18,20 @@ public class Main {
     public static void main(String[] args)  {
         try {
             DataTransformer transformer = new EEGDataTransformer();
-            List<EEGMarker> list = transformer.readMarkerList("c:\\java\\guess_the_number\\data\\numbers\\Blatnice\\blatnice20141023_9.vmrk");
-//            int channel = Integer.parseInt(args[args.length-1]);
+            //List<EEGMarker> list = transformer.readMarkerList("c:\\java\\guess_the_number\\data\\numbers\\Blatnice\\blatnice20141023_9.vmrk");
+            int channel = Integer.parseInt(args[args.length-1]);
             double[] dataInValues;
-//            if (args.length == 3) {
-//
-//                dataInValues = transformer.readBinaryData(args[0], args[1], channel);
-//            }
-//            else {
-                dataInValues = transformer.readBinaryData("c:\\java\\guess_the_number\\data\\numbers\\17ZS\\PD_14_3_2015_01.vhdr", 1, ByteOrder.LITTLE_ENDIAN);
-//            }
+            if (args.length == 3) {
+
+                 dataInValues = transformer.readBinaryData(args[0], args[1], channel, ByteOrder.LITTLE_ENDIAN);
+            }
+            else {
+                 dataInValues = transformer.readBinaryData(args[0], channel, ByteOrder.LITTLE_ENDIAN);
+            }
 //68.4, 69.3, 73
-            int i = 0;
             for (double value: dataInValues) {
                 System.out.println(value);
-                if (i > 100) break;
-                i++;
             }
-            System.out.println(dataInValues.length);
 
 
 //            for (EEGMarker marker: list) {
