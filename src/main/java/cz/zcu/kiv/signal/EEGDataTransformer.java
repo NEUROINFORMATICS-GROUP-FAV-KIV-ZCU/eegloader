@@ -1,7 +1,10 @@
 package cz.zcu.kiv.signal;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.*;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,12 @@ import java.util.List;
 public class EEGDataTransformer implements DataTransformer {
 
     private VhdrReader reader = new VhdrReader();
+    private final String HDFS_URI = "hdfs://localhost:8020";
+    private  final Configuration HDFS_CONF = new Configuration();
+
+    // this will be a copy of the hadoop filesystem that we can later re-use
+    private FileSystem fs;
+
     /**
      * This method reads binary data and decodes double values.
      * This method expects data file and header file in binary form. It is not depend on data source.
@@ -26,42 +35,42 @@ public class EEGDataTransformer implements DataTransformer {
     }
 
     /**
-         * This method reads binary data and decodes double values.
-         * This method expect paths of header and data file in form of String.
-         * Important! The header file must be a first parameter, the data file must be a second parameter.
-         *
-         * @param headerFile  - the path to the header file
-         * @param dataFile - the path to the data file
-         * @param channel - number of channel, used electrode
-         * @return double values of EEG signal
-         * @throws IOException
-         */
+     * This method reads binary data and decodes double values.
+     * This method expect paths of header and data file in form of String.
+     * Important! The header file must be a first parameter, the data file must be a second parameter.
+     *
+     * @param headerFile  - the path to the header file
+     * @param dataFile - the path to the data file
+     * @param channel - number of channel, used electrode
+     * @return double values of EEG signal
+     * @throws IOException
+     */
     public double[] readBinaryData(String headerFile, String dataFile, int channel, ByteOrder order) throws IOException {
         return readBinaryData(fileToByteArray(headerFile), fileToByteArray(dataFile), channel, order);
     }
 
     /**
-         * This method reads binary data and decodes double values.
-         * This method expects path of the header file. It also expects that the data file is in the same directory.
-         * The header file contains information about the data file. If it is in the same directory,
-         * this method is able to find and read it.
-         *
-         * @param headerFile - the path to the header file
-         * @param channel - number of channel, used electrode
-         * @return  double values of EEG signal
-         * @throws IOException
-         */
+     * This method reads binary data and decodes double values.
+     * This method expects path of the header file. It also expects that the data file is in the same directory.
+     * The header file contains information about the data file. If it is in the same directory,
+     * this method is able to find and read it.
+     *
+     * @param headerFile - the path to the header file
+     * @param channel - number of channel, used electrode
+     * @return  double values of EEG signal
+     * @throws IOException
+     */
     public double[] readBinaryData(String headerFile, int channel, ByteOrder order) throws IOException {
         String dataFile = getEEGFileName(headerFile);
         return readBinaryData(headerFile, dataFile, channel, order);
     }
 
     /**
-         * This method reads the marker file containing information about stimuli.
-         *
-         * @param markerFile - the path to the marker file
-         * @return map of stimuli. Each EEGMarker includes information about stimuli, its name and position.
-         */
+     * This method reads the marker file containing information about stimuli.
+     *
+     * @param markerFile - the path to the marker file
+     * @return map of stimuli. Each EEGMarker includes information about stimuli, its name and position.
+     */
     public HashMap<String, EEGMarker> readMarkers(String markerFile) throws IOException {
         reader.readVmrk(fileToByteArray(markerFile));
         return reader.getMarkers();
@@ -74,30 +83,30 @@ public class EEGDataTransformer implements DataTransformer {
     }
 
     /**
-         * This method provides loaded properties of data file from header file.
-         *
-         *
-         * @return properties in HashMap
-         */
+     * This method provides loaded properties of data file from header file.
+     *
+     *
+     * @return properties in HashMap
+     */
     public HashMap<String, HashMap<String, String>> getProperties() {
         return reader.getProperties();
     }
 
     /**
-         * This method provides the list of channel obtained from header file.
-         *
-         *
-         * @return The list of channels
-         */
+     * This method provides the list of channel obtained from header file.
+     *
+     *
+     * @return The list of channels
+     */
     public List<ChannelInfo> getChannelInfo() {
         return reader.getChannels();
     }
 
     private byte[] fileToByteArray(String filename) throws IOException {
-        File file = new File(filename);
-        InputStream fileIS = new FileInputStream(file);
-        DataInputStream data = new DataInputStream(fileIS);
-        byte[] fileArray = new byte[(int) file.length()];
+        this.fs = FileSystem.get(URI.create(HDFS_URI), HDFS_CONF);
+        FSDataInputStream data = fs.open(new Path(filename));
+
+        byte[] fileArray = new byte[(int) fs.getFileLinkStatus(new Path(filename)).getLen()];
         data.readFully(fileArray);
         return fileArray;
     }

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="eegloader">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EEGLoader_2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EEGLoader_2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EEGLoader_2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/EEGLoader_2.12.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
