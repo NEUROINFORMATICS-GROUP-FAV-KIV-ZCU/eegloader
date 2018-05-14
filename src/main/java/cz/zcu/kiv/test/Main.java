@@ -3,6 +3,7 @@ package cz.zcu.kiv.test;
 import cz.zcu.kiv.signal.ChannelInfo;
 import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
+import org.apache.hadoop.conf.Configuration;
 
 import java.nio.ByteOrder;
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.List;
  */
 public class Main {
 
+    private static final String HDFS_URI = "hdfs://localhost:8020";
+    private static final Configuration HDFS_CONF = new Configuration();
 
     public static void main(String[] args)  {
         try {
-            DataTransformer transformer = new EEGDataTransformer();
+            DataTransformer transformer = new EEGDataTransformer(HDFS_URI,HDFS_CONF);
             //List<EEGMarker> list = transformer.readMarkerList("c:\\java\\guess_the_number\\data\\numbers\\Blatnice\\blatnice20141023_9.vmrk");
             List<ChannelInfo> channels = transformer.getChannelInfo(args[0]);
             int channel = Integer.parseInt(args[args.length-1]);
