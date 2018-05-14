@@ -12,11 +12,23 @@ import java.util.List;
 public class EEGDataTransformer implements DataTransformer {
 
     private VhdrReader reader = new VhdrReader();
-    private final String HDFS_URI = "hdfs://localhost:8020";
-    private  final Configuration HDFS_CONF = new Configuration();
+    private String hdfsURI;
+    private Configuration hdfsConfiguration;
 
     // this will be a copy of the hadoop filesystem that we can later re-use
     private FileSystem fs;
+
+    /**
+     * Constructor
+     * Initializes the URI and configugration of the HDFS to use.
+     *
+     * @param hdfsURI - the HDFS URI passed as a string e.g. "hdfs://localhost:8020"
+     * @param hdfsConfiguration - the HDFS Configuration object
+     */
+    public EEGDataTransformer(String hdfsURI, Configuration hdfsConfiguration){
+        this.hdfsURI = hdfsURI;
+        this.hdfsConfiguration = hdfsConfiguration;
+    }
 
     /**
      * This method reads binary data and decodes double values.
@@ -103,7 +115,7 @@ public class EEGDataTransformer implements DataTransformer {
     }
 
     private byte[] fileToByteArray(String filename) throws IOException {
-        this.fs = FileSystem.get(URI.create(HDFS_URI), HDFS_CONF);
+        this.fs = FileSystem.get(URI.create(hdfsURI), hdfsConfiguration);
         FSDataInputStream data = fs.open(new Path(filename));
 
         byte[] fileArray = new byte[(int) fs.getFileLinkStatus(new Path(filename)).getLen()];
