@@ -20,7 +20,7 @@ public class EEGDataTransformer implements DataTransformer {
 
     /**
      * Constructor
-     * Initializes the URI and configugration of the HDFS to use.
+     * Initializes the URI and configuration of the HDFS to use.
      *
      * @param hdfsURI - the HDFS URI passed as a string e.g. "hdfs://localhost:8020"
      * @param hdfsConfiguration - the HDFS Configuration object
@@ -28,6 +28,15 @@ public class EEGDataTransformer implements DataTransformer {
     public EEGDataTransformer(String hdfsURI, Configuration hdfsConfiguration){
         this.hdfsURI = hdfsURI;
         this.hdfsConfiguration = hdfsConfiguration;
+    }
+
+    /**
+     * Default Constructor
+     * Initializes the URI and configuration of the HDFS to use with defaults.
+     */
+    public EEGDataTransformer(){
+        this.hdfsURI = "http://localhost:8020";
+        this.hdfsConfiguration = new Configuration();
     }
 
     /**
