@@ -3,8 +3,6 @@ package cz.zcu.kiv.test;
 import cz.zcu.kiv.signal.ChannelInfo;
 import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
-import cz.zcu.kiv.signal.HDFSEEGDataTransformer;
-import org.apache.hadoop.conf.Configuration;
 
 import java.nio.ByteOrder;
 import java.util.List;

@@ -109,7 +109,7 @@ public class EEGDataTransformer implements DataTransformer {
 
     private String getEEGFileName(String header) throws IOException {
         reader.readVhdr(fileToByteArray(header));
-        int index = header.lastIndexOf("\\");
+        int index = header.lastIndexOf(File.separator);
         String dir = header.substring(0, index + 1);
         HashMap<String, HashMap<String, String>> properties = reader.getProperties();
         HashMap<String, String> property = properties.get("CI");
