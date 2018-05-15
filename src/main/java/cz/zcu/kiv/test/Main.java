@@ -3,6 +3,7 @@ package cz.zcu.kiv.test;
 import cz.zcu.kiv.signal.ChannelInfo;
 import cz.zcu.kiv.signal.DataTransformer;
 import cz.zcu.kiv.signal.EEGDataTransformer;
+import cz.zcu.kiv.signal.HDFSEEGDataTransformer;
 import org.apache.hadoop.conf.Configuration;
 
 import java.nio.ByteOrder;
@@ -16,23 +17,29 @@ import java.util.List;
  * @author Jan Stebetak
  */
 public class Main {
-
+    /*
+    // For Hadoop usage
     private static final String HDFS_URI = "hdfs://localhost:8020";
     private static final Configuration HDFS_CONF = new Configuration();
-
+    */
     public static void main(String[] args)  {
         try {
-            DataTransformer transformer = new EEGDataTransformer(HDFS_URI,HDFS_CONF);
+            /*
+            // For Hadoop usage replace the EEGDataTransformer
+            DataTransformer transformer = new HDFSEEGDataTransformer(HDFS_URI, HDFS_CONF);
+             */
+
+            DataTransformer transformer = new EEGDataTransformer();
             //List<EEGMarker> list = transformer.readMarkerList("c:\\java\\guess_the_number\\data\\numbers\\Blatnice\\blatnice20141023_9.vmrk");
             List<ChannelInfo> channels = transformer.getChannelInfo(args[0]);
             int channel = Integer.parseInt(args[args.length-1]);
             double[] dataInValues;
             if (args.length == 3) {
 
-                 dataInValues = transformer.readBinaryData(args[0], args[1], channel, ByteOrder.LITTLE_ENDIAN);
+                dataInValues = transformer.readBinaryData(args[0], args[1], channel, ByteOrder.LITTLE_ENDIAN);
             }
             else {
-                 dataInValues = transformer.readBinaryData(args[0], channel, ByteOrder.LITTLE_ENDIAN);
+                dataInValues = transformer.readBinaryData(args[0], channel, ByteOrder.LITTLE_ENDIAN);
             }
 //68.4, 69.3, 73
             for (double value: dataInValues) {
@@ -44,7 +51,7 @@ public class Main {
 //                System.out.println(marker.getName() + " " + marker.getPosition());
 //            }
 
-       } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
