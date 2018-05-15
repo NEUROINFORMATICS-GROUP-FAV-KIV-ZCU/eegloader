@@ -9,9 +9,35 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.List;
 
-public class EEGDataTransformer implements DataTransformer {
+public class HDFSEEGDataTransformer implements DataTransformer {
 
     private VhdrReader reader = new VhdrReader();
+    private String hdfsURI;
+    private Configuration hdfsConfiguration;
+
+    // this will be a copy of the hadoop filesystem that we can later re-use
+    private FileSystem fs;
+
+    /**
+     * Constructor
+     * Initializes the URI and configuration of the HDFS to use.
+     *
+     * @param hdfsURI - the HDFS URI passed as a string e.g. "hdfs://localhost:8020"
+     * @param hdfsConfiguration - the HDFS Configuration object
+     */
+    public HDFSEEGDataTransformer(String hdfsURI, Configuration hdfsConfiguration){
+        this.hdfsURI = hdfsURI;
+        this.hdfsConfiguration = hdfsConfiguration;
+    }
+
+    /**
+     * Default Constructor
+     * Initializes the URI and configuration of the HDFS to use with defaults.
+     */
+    public HDFSEEGDataTransformer(){
+        this.hdfsURI = "http://localhost:8020";
+        this.hdfsConfiguration = new Configuration();
+    }
 
     /**
      * This method reads binary data and decodes double values.
@@ -98,11 +124,10 @@ public class EEGDataTransformer implements DataTransformer {
     }
 
     private byte[] fileToByteArray(String filename) throws IOException {
-        File file = new File(filename);
-        InputStream fileIS = new FileInputStream(file);
-        DataInputStream data = new DataInputStream(fileIS);
+        this.fs = FileSystem.get(URI.create(hdfsURI), hdfsConfiguration);
+        FSDataInputStream data = fs.open(new Path(filename));
 
-        byte[] fileArray = new byte[(int) file.length()];
+        byte[] fileArray = new byte[(int) fs.getFileLinkStatus(new Path(filename)).getLen()];
         data.readFully(fileArray);
         return fileArray;
     }
